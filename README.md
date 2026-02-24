@@ -2,8 +2,6 @@
 
 A modern, elegant dashboard application for browsing and discovering Netflix Singapore content with advanced search, filtering, and pagination features. Built with React, TypeScript, and designed with Apple.com-inspired aesthetics and Red Hat Quay branding.
 
-![Red Hat Quay](public/assets/redhat-quay-logo.png)
-
 ## 📸 Application Preview
 
 ![Netflix Movie Dashboard](public/assets/screenshot-main.jpg)
