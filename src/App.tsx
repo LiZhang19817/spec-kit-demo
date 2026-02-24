@@ -55,7 +55,7 @@ export default function App() {
    */
   const pagination = usePagination({
     totalItems: filteredMovies.length,
-    initialItemsPerPage: 24,
+    initialItemsPerPage: 8,
   });
 
   // Get current page movies
@@ -166,7 +166,7 @@ export default function App() {
         <>
           {/* Pagination Top */}
           <div className="mb-6">
-            <Pagination pagination={pagination} />
+            <Pagination pagination={pagination} itemsPerPageOptions={[8, 16, 24, 40]} />
           </div>
 
           {/* Movie Grid */}
@@ -179,7 +179,7 @@ export default function App() {
 
           {/* Pagination Bottom */}
           <div className="mt-8">
-            <Pagination pagination={pagination} />
+            <Pagination pagination={pagination} itemsPerPageOptions={[8, 16, 24, 40]} />
           </div>
         </>
       )}

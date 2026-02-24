@@ -22,7 +22,9 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
   - IMDB rating filtering
   - Runtime filtering
 - **Favorites System**: Mark and manage your favorite movies and series
-- **Pagination**: Browse content with customizable items per page (12, 24, 48, 96)
+- **Optimized Pagination**: Browse content with 8 items per page by default (all visible without scrolling)
+  - Customizable options: 8, 16, 24, or 40 items per page
+  - Responsive grid: 4 columns on desktop, 3 on tablet, 2 on mobile
 - **Responsive Design**: Optimized for desktop and mobile viewing
 
 ### User Experience
@@ -30,6 +32,7 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
 - **Dark Mode**: Pure black (#000000) background with elegant typography
 - **SF Pro Fonts**: Premium typography matching Apple's design language
 - **Smooth Animations**: Powered by Framer Motion for delightful interactions
+- **No Scrolling Required**: All images on each page visible at once for better browsing
 - **Accessibility**: Keyboard shortcuts (Cmd/Ctrl+K for search)
 
 ### Technical Highlights
@@ -154,9 +157,11 @@ npm run typecheck
 
 ### Pagination
 
-- **Items per page**: Select 12, 24, 48, or 96 items per page
+- **Optimized Display**: Default 8 items per page (2 rows of 4 on desktop) - all visible without scrolling
+- **Items per page options**: Select 8, 16, 24, or 40 items per page
 - **Navigation**: Use Previous/Next buttons or click page numbers
-- **Results counter**: Shows current range (e.g., "Showing 1 to 24 of 395 results")
+- **Results counter**: Shows current range (e.g., "Showing 1 to 8 of 395 results")
+- **Responsive grid**: Automatically adjusts columns based on screen size (4 columns desktop, 3 tablet, 2 mobile)
 
 ## 🎨 Design System
 
