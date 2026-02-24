@@ -22,6 +22,13 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
   - IMDB rating filtering
   - Runtime filtering
 - **Favorites System**: Mark and manage your favorite movies and series
+- **Movie Detail Modal**: Click any movie to view detailed information
+  - Full movie synopsis and description
+  - Cast, director, runtime, and content rating
+  - Genre tags and star ratings
+  - Direct Netflix URL link with "Watch on Netflix" button
+  - Elegant dark modal with smooth animations
+  - Close with Escape key or click outside
 - **Optimized Pagination**: Browse content with 8 items per page by default (all visible without scrolling)
   - Customizable options: 8, 16, 24, or 40 items per page
   - Responsive grid: 4 columns on desktop, 3 on tablet, 2 on mobile
@@ -143,7 +150,7 @@ npm run typecheck
 ### Keyboard Shortcuts
 
 - **Cmd/Ctrl + K**: Focus search input
-- **Escape**: Clear search and close filter panel
+- **Escape**: Clear search, close filter panel, or close movie detail modal
 
 ### Search & Filter
 
@@ -154,6 +161,17 @@ npm run typecheck
 5. **IMDB Rating**: Filter by minimum IMDB rating
 6. **Runtime**: Filter by movie/series duration
 7. **Favorites**: Toggle the favorites filter to see only your favorite content
+
+### Movie Details
+
+Click on any movie poster or card to view detailed information:
+
+1. **Movie Information**: Full synopsis, cast, director, runtime
+2. **Ratings**: Star rating display and content rating badge
+3. **Genres**: All genre tags for the movie
+4. **Netflix Link**: Click "Watch on Netflix" button to search for the title on Netflix
+5. **URL Display**: Full Netflix search URL shown below the button
+6. **Close Modal**: Press Escape key, click the X button, or click outside the modal
 
 ### Pagination
 
