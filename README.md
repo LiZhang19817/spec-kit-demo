@@ -14,6 +14,9 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
 
 ### Core Functionality
 - **Netflix Singapore Content Library**: Browse 395+ Netflix movies and series from 2000-2026
+  - **Smart Sorting**: Latest movies appear first (newest to oldest by default)
+  - Page 1 shows the most recent releases (2026, 2025, 2024...)
+  - Last pages show older classics (2000-2003)
 - **Smart Search**: Fuzzy search powered by Fuse.js for finding content by title, cast, or description
 - **Advanced Filtering**:
   - Genre filtering (Action, Comedy, Drama, Thriller, Horror, and more)
@@ -173,8 +176,11 @@ Click on any movie poster or card to view detailed information:
 5. **URL Display**: Full Netflix search URL shown below the button
 6. **Close Modal**: Press Escape key, click the X button, or click outside the modal
 
-### Pagination
+### Pagination & Sorting
 
+- **Smart Default Sort**: Movies sorted by release year (newest first)
+  - Page 1: Latest releases (2026, 2025, 2024...)
+  - Last page: Older classics (2003, 2002, 2001, 2000)
 - **Optimized Display**: Default 8 items per page (2 rows of 4 on desktop) - all visible without scrolling
 - **Items per page options**: Select 8, 16, 24, or 40 items per page
 - **Navigation**: Use Previous/Next buttons or click page numbers
