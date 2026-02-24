@@ -206,6 +206,7 @@ function processMovie(movie, details) {
     contentRating: contentRating,
     type: 'movie',
     netflixId: movie.id,
+    netflixUrl: `https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`,
   };
 }
 
@@ -248,6 +249,7 @@ function processSeries(series, details) {
     contentRating: contentRating,
     type: 'series',
     netflixId: series.id,
+    netflixUrl: `https://www.netflix.com/search?q=${encodeURIComponent(series.name)}`,
   };
 }
 

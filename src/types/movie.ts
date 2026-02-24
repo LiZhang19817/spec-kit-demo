@@ -97,6 +97,9 @@ export interface Movie {
 
   /** Content rating (Singapore film classification) */
   contentRating?: ContentRating;
+
+  /** Netflix URL for this title */
+  netflixUrl?: string;
 }
 
 /**

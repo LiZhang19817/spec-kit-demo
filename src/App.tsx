@@ -3,9 +3,10 @@
  * Root application component with movie browsing and search
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import MovieGrid from '@/components/movie/MovieGrid';
+import MovieDetailModal from '@/components/movie/MovieDetailModal';
 import EmptyState from '@/components/common/EmptyState';
 import Pagination from '@/components/common/Pagination';
 import { useMovieStore } from '@/store/movieStore';
@@ -14,6 +15,7 @@ import { useUIStore } from '@/store/uiStore';
 import { useFavoritesStore } from '@/store/favoritesStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { usePagination } from '@/hooks/usePagination';
+import { Movie } from '@/types/movie';
 
 /**
  * Root App Component
@@ -60,6 +62,31 @@ export default function App() {
 
   // Get current page movies
   const paginatedMovies = filteredMovies.slice(pagination.startIndex, pagination.endIndex);
+
+  /**
+   * Movie detail modal state
+   */
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  /**
+   * Handle movie click - open detail modal
+   */
+  const handleMovieClick = (movieId: string) => {
+    const movie = movies.find((m) => m.id === movieId);
+    if (movie) {
+      setSelectedMovie(movie);
+      setIsModalOpen(true);
+    }
+  };
+
+  /**
+   * Close modal handler
+   */
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMovie(null);
+  };
 
   /**
    * Initialize app on mount
@@ -174,6 +201,7 @@ export default function App() {
             movies={paginatedMovies}
             favorites={favorites}
             onFavoriteToggle={toggleFavorite}
+            onMovieClick={handleMovieClick}
             isLoading={isLoading}
           />
 
@@ -183,6 +211,9 @@ export default function App() {
           </div>
         </>
       )}
+
+      {/* Movie Detail Modal */}
+      <MovieDetailModal movie={selectedMovie} isOpen={isModalOpen} onClose={handleCloseModal} />
     </Layout>
   );
 }
