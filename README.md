@@ -8,7 +8,7 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
 
 ![Netflix Movie Dashboard](public/assets/screenshot-main.jpg)
 
-*The Netflix Movie Dashboard showcasing the elegant Apple.com-inspired design with Red Hat Quay branding, advanced search and filtering capabilities, and a beautiful grid of Netflix Singapore content.*
+*The Netflix Movie Dashboard in action: Showing the latest 2026 releases with smart sorting (newest first), active content rating filters (R21, M18), advanced filtering sidebar, and elegant Apple.com-inspired dark design with Red Hat Quay branding. Features include search bar, genre filters, year range slider, pagination controls, and movie cards with ratings and favorites.*
 
 ## 🎯 Features
 
