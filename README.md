@@ -4,6 +4,12 @@ A modern, elegant dashboard application for browsing and discovering Netflix Sin
 
 ![Red Hat Quay](public/assets/redhat-quay-logo.png)
 
+## 📸 Application Preview
+
+![Netflix Movie Dashboard](public/assets/screenshot-main.jpg)
+
+*The Netflix Movie Dashboard showcasing the elegant Apple.com-inspired design with Red Hat Quay branding, advanced search and filtering capabilities, and a beautiful grid of Netflix Singapore content.*
+
 ## 🎯 Features
 
 ### Core Functionality
