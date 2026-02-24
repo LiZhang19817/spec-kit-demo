@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light mode Apple design tokens */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f7;
+  --color-bg-tertiary: #e8e8ed;
+  --color-text-primary: #000000;
+  --color-text-secondary: #6e6e73;
+  --color-text-tertiary: #86868b;
+  --color-accent: #0071e3;
+  --color-divider: #d2d2d7;
+}
+
+[data-theme='dark'] {
+  /* Dark mode Apple design tokens */
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #161618;
+  --color-bg-tertiary: #212124;
+  --color-text-primary: #f5f5f7;
+  --color-text-secondary: #a1a1a6;
+  --color-text-tertiary: #86868b;
+  --color-accent: #0a84ff;
+  --color-divider: #38383a;
+}
+
+@layer base {
+  * {
+    @apply border-apple-divider;
+  }
+
+  body {
+    @apply bg-apple-bg-primary text-apple-text-primary font-sans antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2.5 bg-apple-accent text-white rounded-apple-lg font-medium
+      hover:bg-opacity-90 transition-all duration-200 focus:outline-none
+      focus:ring-2 focus:ring-apple-accent focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-2.5 bg-apple-bg-secondary text-apple-text-primary rounded-apple-lg
+      font-medium hover:bg-apple-bg-tertiary transition-all duration-200
+      focus:outline-none focus:ring-2 focus:ring-apple-divider;
+  }
+
+  .card {
+    @apply bg-apple-bg-primary border border-apple-divider rounded-apple-xl
+      shadow-apple-md hover:shadow-apple-lg transition-shadow duration-300;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

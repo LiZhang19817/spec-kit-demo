@@ -1,0 +1,32 @@
+/**
+ * useDebounce Hook
+ * Debounce a value with configurable delay
+ */
+
+import { useState, useEffect } from 'react';
+
+/**
+ * Debounce a value to limit update frequency
+ * Useful for search inputs and expensive operations
+ *
+ * @param value - Value to debounce
+ * @param delay - Delay in milliseconds (default: 300ms)
+ * @returns Debounced value
+ */
+export function useDebounce<T>(value: T, delay: number = 300): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    // Set timeout to update debounced value
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    // Cleanup timeout on value change or unmount
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}

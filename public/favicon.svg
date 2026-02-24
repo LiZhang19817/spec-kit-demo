@@ -1,0 +1,27 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Red Hat Quay favicon -->
+  <rect width="64" height="64" fill="#FFFFFF" rx="8"/>
+
+  <!-- Red Hat fedora hat -->
+  <g transform="translate(10, 16) scale(0.35)">
+    <!-- Hat brim -->
+    <ellipse cx="60" cy="85" rx="55" ry="15" fill="#EE0000"/>
+
+    <!-- Hat crown -->
+    <path d="M 20 85 Q 20 60 40 50 L 80 50 Q 100 60 100 85 Z" fill="#EE0000"/>
+
+    <!-- Hat band -->
+    <ellipse cx="60" cy="58" rx="40" ry="8" fill="#000000"/>
+  </g>
+
+  <!-- "Q" letter for Quay -->
+  <text
+    x="32"
+    y="52"
+    text-anchor="middle"
+    fill="#000000"
+    font-family="Red Hat Display, Arial, sans-serif"
+    font-size="24"
+    font-weight="bold"
+  >Q</text>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "name": "Red Hat Quay Entertainment",
+  "short_name": "Quay Entertainment",
+  "description": "Browse, search, and discover Netflix content - Powered by Red Hat Quay",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#EE0000",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
