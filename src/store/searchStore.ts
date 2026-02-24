@@ -129,7 +129,7 @@ export const useSearchStore = create<SearchState>()(
     (set, get) => ({
       searchTerm: '',
       filters: DEFAULT_FILTERS,
-      sort: { field: 'title', order: 'asc' },
+      sort: { field: 'releaseYear', order: 'desc' },
       searchIndex: null,
       filteredMovies: [],
 
