@@ -3,16 +3,8 @@
 A React + TypeScript dashboard for browsing **Netflix** and **Max (HBO Max)** movies and series from a shared TMDB-backed catalog. The UI uses Apple-inspired layout, Red Hat Quay branding, **English / 简体中文** i18n, and separate catalog views so titles are not mixed between services.
 
 ## Application preview
+<img width="1596" height="897" alt="image" src="https://github.com/user-attachments/assets/fcf6b7b5-49cb-4fcc-bf56-86f20b395a46" />
 
-<p align="center">
-  <img
-    src="public/assets/application-preview.png"
-    alt="Netflix and Max dashboard: Red Hat Quay header, Browse Netflix / Max tabs, sidebar filters, and movie grid"
-    width="920"
-  />
-</p>
-
-**Screenshot** ([`public/assets/application-preview.png`](public/assets/application-preview.png)) — Taken from a **running** instance of the app (dev server, **`/netflix`** route, 1440×900 viewport, headless Chromium). It shows **Browse → Netflix** and **Browse → Max (HBO Max)** tabs, left-hand filters (genres, Singapore content ratings, release year, rating), search, **Update** / theme / language controls, and the poster grid with favorites. The same layout is used on both catalog routes; only titles for the selected service are listed. Re-capture by starting `npm run dev`, opening `/netflix`, and saving a PNG over this path if you change the UI.
 
 ## Current status (2026)
 
