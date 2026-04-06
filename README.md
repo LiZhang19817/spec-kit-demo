@@ -12,7 +12,7 @@ A React + TypeScript dashboard for browsing **Netflix** and **Max (HBO Max)** mo
   />
 </p>
 
-**Screenshot** ([`public/assets/application-preview.png`](public/assets/application-preview.png)) — Main library view with **Browse → Netflix** and **Browse → Max (HBO Max)** tabs, left-hand filters (genres, Singapore content ratings, release year, rating), search, **Update** / theme / language controls, and the poster grid with favorites. The same layout is used on both catalog routes; only titles for the selected service are listed.
+**Screenshot** ([`public/assets/application-preview.png`](public/assets/application-preview.png)) — Taken from a **running** instance of the app (dev server, **`/netflix`** route, 1440×900 viewport, headless Chromium). It shows **Browse → Netflix** and **Browse → Max (HBO Max)** tabs, left-hand filters (genres, Singapore content ratings, release year, rating), search, **Update** / theme / language controls, and the poster grid with favorites. The same layout is used on both catalog routes; only titles for the selected service are listed. Re-capture by starting `npm run dev`, opening `/netflix`, and saving a PNG over this path if you change the UI.
 
 ## Current status (2026)
 
