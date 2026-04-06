@@ -4,9 +4,15 @@ A React + TypeScript dashboard for browsing **Netflix** and **Max (HBO Max)** mo
 
 ## Application preview
 
-![Netflix Movie Dashboard](public/assets/screenshot-main.jpg)
+<p align="center">
+  <img
+    src="public/assets/application-preview.png"
+    alt="Netflix and Max dashboard: Red Hat Quay header, Browse Netflix / Max tabs, sidebar filters, and movie grid"
+    width="920"
+  />
+</p>
 
-*Example view: searchable library with filters (genres, Singapore content ratings, year range, rating), pagination, and dark theme. Use the **Browse** tabs to switch between Netflix-only and Max-only lists.*
+**Screenshot** ([`public/assets/application-preview.png`](public/assets/application-preview.png)) — Main library view with **Browse → Netflix** and **Browse → Max (HBO Max)** tabs, left-hand filters (genres, Singapore content ratings, release year, rating), search, **Update** / theme / language controls, and the poster grid with favorites. The same layout is used on both catalog routes; only titles for the selected service are listed.
 
 ## Current status (2026)
 
