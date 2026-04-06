@@ -5,6 +5,9 @@
 
 import { Genre, ContentRating } from './movie';
 
+/** UI language: English (default) or Simplified Chinese */
+export type AppLocale = 'en' | 'zh-CN';
+
 /**
  * Filter criteria for narrowing down movie collection
  */
@@ -73,6 +76,9 @@ export interface UserPreferences {
   /** Enable animations (performance setting) */
   enableAnimations: boolean;
 
+  /** UI language */
+  locale: AppLocale;
+
   /** Last updated timestamp */
   lastUpdated: number;
 }
@@ -107,6 +113,7 @@ export const DEFAULT_PREFERENCES: UserPreferences = {
   sortBy: 'title',
   sortOrder: 'asc',
   enableAnimations: true,
+  locale: 'en',
   lastUpdated: Date.now(),
 };
 
@@ -137,6 +144,8 @@ export function isUserPreferences(value: unknown): value is UserPreferences {
   const validSorts = ['title', 'releaseYear', 'rating', 'runtime'];
   const validOrders = ['asc', 'desc'];
 
+  const localeOk = prefs.locale === undefined || prefs.locale === 'en' || prefs.locale === 'zh-CN';
+
   return (
     validThemes.includes(prefs.theme as string) &&
     validViews.includes(prefs.viewType as string) &&
@@ -144,6 +153,7 @@ export function isUserPreferences(value: unknown): value is UserPreferences {
     validSorts.includes(prefs.sortBy as string) &&
     validOrders.includes(prefs.sortOrder as string) &&
     typeof prefs.enableAnimations === 'boolean' &&
-    typeof prefs.lastUpdated === 'number'
+    typeof prefs.lastUpdated === 'number' &&
+    localeOk
   );
 }

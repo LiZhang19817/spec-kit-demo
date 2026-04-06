@@ -5,3 +5,4 @@ coverage/
 *.min.js
 *.config.js
 vite.config.ts
+vite-plugin-refresh-catalog.ts

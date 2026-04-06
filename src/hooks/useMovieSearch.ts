@@ -7,6 +7,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useMovieStore } from '@/store/movieStore';
 import { useSearchStore } from '@/store/searchStore';
 import { useFavoritesStore } from '@/store/favoritesStore';
+import { useStreamingCatalogOptional } from '@/context/StreamingCatalogContext';
 import { useDebounce } from './useDebounce';
 import { Movie } from '@/types/movie';
 
@@ -34,7 +35,9 @@ export interface UseMovieSearchResult {
  * Hook for searching movies with debouncing
  */
 export function useMovieSearch(): UseMovieSearchResult {
-  const movies = useMovieStore((state) => state.movies);
+  const allMovies = useMovieStore((state) => state.movies);
+  const streaming = useStreamingCatalogOptional();
+  const movies = streaming?.catalogMovies ?? allMovies;
   const setSearchTermStore = useSearchStore((state) => state.setSearchTerm);
   const applyFiltersAndSearch = useSearchStore((state) => state.applyFiltersAndSearch);
   const favorites = useFavoritesStore((state) => state.favorites);
@@ -54,12 +57,18 @@ export function useMovieSearch(): UseMovieSearchResult {
     }
   }, [searchTerm, debouncedSearchTerm]);
 
-  // Apply search and filters when debounced term changes
+  // Re-apply when the debounced term or the movie list changes (avoids searching with [] while the index is populated).
   useEffect(() => {
     setSearchTermStore(debouncedSearchTerm);
     applyFiltersAndSearch(movies, favorites);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchTerm]);
+  }, [
+    debouncedSearchTerm,
+    movies,
+    streaming?.catalog,
+    favorites,
+    applyFiltersAndSearch,
+    setSearchTermStore,
+  ]);
 
   const filteredMovies = useSearchStore((state) => state.filteredMovies);
 

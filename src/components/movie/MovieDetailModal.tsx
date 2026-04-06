@@ -1,11 +1,15 @@
 /**
  * MovieDetailModal Component
- * Modal to display detailed movie information and Netflix URL
+ * Modal to display detailed movie information and streaming watch links
  */
 
 import { useEffect } from 'react';
 import { Movie } from '@/types/movie';
 import Button from '@/components/common/Button';
+import { useTranslation } from '@/i18n/useTranslation';
+import { contentRatingToPillId, genreToMessageId } from '@/i18n/labels';
+import { useMovieDisplayText } from '@/hooks/useMovieDisplayText';
+import { getStreamingWatchLink } from '@/lib/streamingWatch';
 
 export interface MovieDetailModalProps {
   /** Movie to display */
@@ -19,9 +23,12 @@ export interface MovieDetailModalProps {
 }
 
 /**
- * Modal component showing movie details and Netflix link
+ * Modal component showing movie details and primary streaming link (Netflix or Max)
  */
 export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetailModalProps) {
+  const { t } = useTranslation();
+  const { displayTitle, displayDescription } = useMovieDisplayText(movie);
+
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -45,9 +52,7 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
     return null;
   }
 
-  // Generate Netflix URL if not provided
-  const netflixUrl =
-    movie.netflixUrl || `https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`;
+  const { url: watchUrl, provider, secondaryUrl } = getStreamingWatchLink(movie);
 
   return (
     <div
@@ -60,9 +65,10 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
       >
         {/* Close button */}
         <button
+          type="button"
           onClick={onClose}
           className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black bg-opacity-50 hover:bg-opacity-70 transition-all"
-          aria-label="Close modal"
+          aria-label={t('modal_close_aria')}
         >
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -79,7 +85,7 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
           <div className="flex flex-col items-center">
             <img
               src={movie.thumbnailUrl}
-              alt={movie.title}
+              alt={displayTitle}
               className="w-full rounded-apple-md shadow-2xl"
               loading="lazy"
             />
@@ -89,15 +95,21 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
           <div className="flex flex-col gap-6">
             {/* Title and Year */}
             <div>
-              <h2 className="text-3xl font-semibold text-apple-text-primary mb-2">{movie.title}</h2>
+              <h2 className="text-3xl font-semibold text-apple-text-primary mb-2">
+                {displayTitle}
+              </h2>
               <div className="flex items-center gap-3 text-apple-text-secondary">
                 <span>{movie.releaseYear}</span>
                 {movie.runtime && <span>•</span>}
-                {movie.runtime && <span>{movie.runtime} min</span>}
+                {movie.runtime && (
+                  <span>
+                    {movie.runtime} {t('modal_min')}
+                  </span>
+                )}
                 {movie.contentRating && <span>•</span>}
                 {movie.contentRating && (
                   <span className="px-2 py-0.5 bg-apple-bg-tertiary rounded text-xs font-semibold">
-                    {movie.contentRating}
+                    {t(contentRatingToPillId(movie.contentRating))}
                   </span>
                 )}
               </div>
@@ -124,14 +136,16 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
 
             {/* Genres */}
             <div>
-              <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">GENRES</h3>
+              <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">
+                {t('modal_genres')}
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {movie.genres.map((genre) => (
                   <span
                     key={genre}
                     className="px-3 py-1 bg-apple-bg-tertiary rounded-full text-sm text-apple-text-primary"
                   >
-                    {genre}
+                    {t(genreToMessageId(genre))}
                   </span>
                 ))}
               </div>
@@ -139,14 +153,18 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
 
             {/* Description */}
             <div>
-              <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">SYNOPSIS</h3>
-              <p className="text-apple-text-primary leading-relaxed">{movie.description}</p>
+              <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">
+                {t('modal_synopsis')}
+              </h3>
+              <p className="text-apple-text-primary leading-relaxed">{displayDescription}</p>
             </div>
 
             {/* Cast */}
             {movie.cast && movie.cast.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">CAST</h3>
+                <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">
+                  {t('modal_cast')}
+                </h3>
                 <p className="text-apple-text-primary">{movie.cast.join(', ')}</p>
               </div>
             )}
@@ -154,29 +172,63 @@ export default function MovieDetailModal({ movie, isOpen, onClose }: MovieDetail
             {/* Director */}
             {movie.director && (
               <div>
-                <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">DIRECTOR</h3>
+                <h3 className="text-sm font-semibold text-apple-text-secondary mb-2">
+                  {t('modal_director')}
+                </h3>
                 <p className="text-apple-text-primary">{movie.director}</p>
               </div>
             )}
 
-            {/* Netflix URL */}
+            {/* Streaming watch link */}
             <div className="pt-4 border-t border-apple-bg-tertiary">
               <a
-                href={netflixUrl}
+                href={watchUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block"
+                className="inline-block w-full"
               >
-                <Button variant="primary" size="large" className="w-full">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  className={
+                    provider === 'max'
+                      ? '!bg-violet-700 hover:!bg-violet-600 focus:!ring-violet-500'
+                      : ''
+                  }
+                >
                   <div className="flex items-center justify-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596 2.344.058 4.85.398 4.854.398-2.8-7.924-5.923-16.747-8.487-24zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.913.002-22.95zM5.398 1.05V24c2.136-.143 4.988-.287 5.018-.287C8.36 17.048 5.515 8.161 5.398 1.05z" />
-                    </svg>
-                    <span>Watch on Netflix</span>
+                    {provider === 'netflix' ? (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                        <path d="M5.398 0v.006c3.028 8.556 5.37 15.175 8.348 23.596 2.344.058 4.85.398 4.854.398-2.8-7.924-5.923-16.747-8.487-24zm8.489 0v9.63L18.6 22.951c-.043-7.86-.004-15.913.002-22.95zM5.398 1.05V24c2.136-.143 4.988-.287 5.018-.287C8.36 17.048 5.515 8.161 5.398 1.05z" />
+                      </svg>
+                    ) : (
+                      <span
+                        className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-sm bg-white/20 px-0.5 text-xs font-black leading-none"
+                        aria-hidden
+                      >
+                        M
+                      </span>
+                    )}
+                    <span>
+                      {provider === 'netflix' ? t('modal_watch_netflix') : t('modal_watch_max')}
+                    </span>
                   </div>
                 </Button>
               </a>
-              <p className="text-xs text-apple-text-tertiary mt-2 text-center">{netflixUrl}</p>
+              <p className="text-xs text-apple-text-tertiary mt-2 text-center break-all">
+                {watchUrl}
+              </p>
+              {secondaryUrl && (
+                <a
+                  href={secondaryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 block text-center text-sm text-violet-400 underline hover:text-violet-300"
+                >
+                  {t('modal_watch_also_max')}
+                </a>
+              )}
             </div>
           </div>
         </div>

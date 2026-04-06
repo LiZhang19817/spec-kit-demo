@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import { Movie } from '@/types/movie';
 import SearchHighlight from '@/components/search/SearchHighlight';
 import { useSearchStore } from '@/store/searchStore';
+import { useTranslation } from '@/i18n/useTranslation';
+import { useMovieDisplayText } from '@/hooks/useMovieDisplayText';
 
 export interface MovieCardProps {
   /** Movie data */
@@ -35,6 +37,9 @@ export default function MovieCard({
   onClick,
   className = '',
 }: MovieCardProps) {
+  const { t } = useTranslation();
+  const { displayTitle } = useMovieDisplayText(movie);
+
   const handleCardClick = () => {
     if (onClick) {
       onClick(movie.id);
@@ -56,13 +61,13 @@ export default function MovieCard({
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2 }}
       role="article"
-      aria-label={`${movie.title} (${movie.releaseYear})`}
+      aria-label={`${displayTitle} (${movie.releaseYear})`}
     >
       {/* Movie Poster */}
       <div className="relative aspect-[2/3] overflow-hidden bg-apple-bg-tertiary">
         <img
           src={movie.thumbnailUrl}
-          alt={`${movie.title} poster`}
+          alt={`${displayTitle} ${t('poster_alt')}`}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
@@ -74,7 +79,7 @@ export default function MovieCard({
           whileTap={{ scale: 0.8 }}
           whileHover={{ scale: 1.1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-          aria-label={`${isFavorite ? 'Remove from' : 'Add to'} favorites`}
+          aria-label={isFavorite ? t('favorite_remove') : t('favorite_add')}
         >
           <motion.span
             key={isFavorite ? 'filled' : 'empty'}
@@ -92,7 +97,7 @@ export default function MovieCard({
       <div className="p-4">
         {/* Title */}
         <h3 className="text-lg font-semibold text-apple-text-primary mb-1 line-clamp-1">
-          <SearchHighlight text={movie.title} searchTerm={searchTerm} />
+          <SearchHighlight text={displayTitle} searchTerm={searchTerm} />
         </h3>
 
         {/* Year and Rating */}

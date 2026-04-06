@@ -6,10 +6,13 @@
 import { useState } from 'react';
 import { Genre, ContentRating } from '@/types/movie';
 import { FilterCriteria } from '@/types/filters';
+import { useTranslation } from '@/i18n/useTranslation';
+import { contentRatingToPillId, genreToMessageId } from '@/i18n/labels';
 import GenreFilter from './GenreFilter';
 import YearFilter from './YearFilter';
 import RatingFilter from './RatingFilter';
 import ContentRatingFilter from './ContentRatingFilter';
+import FavoritesFilterSection from './FavoritesFilterSection';
 
 export interface FilterPanelProps {
   /** Active filter criteria */
@@ -34,6 +37,7 @@ export default function FilterPanel({
   showRuntimeFilter = false,
   className = '',
 }: FilterPanelProps) {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(true);
 
   // Calculate active filter count
@@ -113,24 +117,25 @@ export default function FilterPanel({
   return (
     <div
       role="region"
-      aria-label="Filters"
+      aria-label={t('filters_region_aria')}
       className={`bg-apple-bg-secondary rounded-apple-lg p-4 ${className}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-apple-text-primary">Filters</h2>
+          <h2 className="text-lg font-semibold text-apple-text-primary">{t('filters_heading')}</h2>
           {activeCount > 0 && (
             <span className="px-2 py-0.5 text-xs font-medium bg-apple-accent text-white rounded-full">
-              {activeCount} active
+              {t('filters_active_badge', { count: activeCount })}
             </span>
           )}
         </div>
 
         {/* Collapse Toggle */}
         <button
+          type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          aria-label="Toggle filters"
+          aria-label={t('filters_toggle')}
           aria-expanded={isExpanded}
           className="p-2 hover:bg-apple-bg-tertiary rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-apple-accent"
         >
@@ -141,10 +146,11 @@ export default function FilterPanel({
       {/* Clear All Button */}
       {activeCount > 0 && isExpanded && (
         <button
+          type="button"
           onClick={handleClearAll}
           className="w-full mb-4 px-4 py-2 text-sm font-medium text-apple-accent bg-apple-bg-primary rounded-apple-md hover:bg-apple-bg-tertiary transition-colors focus:outline-none focus:ring-2 focus:ring-apple-accent"
         >
-          Clear All
+          {t('filters_clear_all')}
         </button>
       )}
 
@@ -153,12 +159,13 @@ export default function FilterPanel({
         <div className="flex flex-wrap gap-2 mb-4">
           {(activeFilters.genres?.length ?? 0) > 0 && (
             <button
+              type="button"
               onClick={handleRemoveGenreFilter}
               className="group flex items-center gap-2 px-3 py-1.5 bg-apple-accent text-white text-sm rounded-full hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-apple-accent focus:ring-offset-2"
             >
-              <span>{activeFilters.genres?.join(', ')}</span>
+              <span>{activeFilters.genres?.map((g) => t(genreToMessageId(g))).join(', ')}</span>
               <span
-                aria-label="Remove filter"
+                aria-label={t('filters_remove_filter')}
                 className="text-xs opacity-75 group-hover:opacity-100"
               >
                 ✕
@@ -168,14 +175,16 @@ export default function FilterPanel({
 
           {(activeFilters.minYear !== undefined || activeFilters.maxYear !== undefined) && (
             <button
+              type="button"
               onClick={handleRemoveYearFilter}
               className="group flex items-center gap-2 px-3 py-1.5 bg-apple-accent text-white text-sm rounded-full hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-apple-accent focus:ring-offset-2"
             >
               <span>
-                {activeFilters.minYear ?? 'Any'} - {activeFilters.maxYear ?? 'Any'}
+                {activeFilters.minYear ?? t('filter_any')} -{' '}
+                {activeFilters.maxYear ?? t('filter_any')}
               </span>
               <span
-                aria-label="Remove filter"
+                aria-label={t('filters_remove_filter')}
                 className="text-xs opacity-75 group-hover:opacity-100"
               >
                 ✕
@@ -185,12 +194,15 @@ export default function FilterPanel({
 
           {activeFilters.minRating !== undefined && (
             <button
+              type="button"
               onClick={handleRemoveRatingFilter}
               className="group flex items-center gap-2 px-3 py-1.5 bg-apple-accent text-white text-sm rounded-full hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-apple-accent focus:ring-offset-2"
             >
-              <span>{activeFilters.minRating.toFixed(1)}+ rating</span>
+              <span>
+                {activeFilters.minRating.toFixed(1)}+ {t('filter_rating_suffix')}
+              </span>
               <span
-                aria-label="Remove filter"
+                aria-label={t('filters_remove_filter')}
                 className="text-xs opacity-75 group-hover:opacity-100"
               >
                 ✕
@@ -200,12 +212,15 @@ export default function FilterPanel({
 
           {(activeFilters.contentRatings?.length ?? 0) > 0 && (
             <button
+              type="button"
               onClick={handleRemoveContentRatingFilter}
               className="group flex items-center gap-2 px-3 py-1.5 bg-apple-accent text-white text-sm rounded-full hover:bg-opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-apple-accent focus:ring-offset-2"
             >
-              <span>{activeFilters.contentRatings?.join(', ')}</span>
+              <span>
+                {activeFilters.contentRatings?.map((r) => t(contentRatingToPillId(r))).join(', ')}
+              </span>
               <span
-                aria-label="Remove filter"
+                aria-label={t('filters_remove_filter')}
                 className="text-xs opacity-75 group-hover:opacity-100"
               >
                 ✕
@@ -250,23 +265,10 @@ export default function FilterPanel({
 
           <hr className="border-apple-divider" />
 
-          {/* Favorites Filter */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium text-apple-text-primary">Favorites</h3>
-
-            <label className="flex items-center gap-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={activeFilters.showFavoritesOnly ?? false}
-                onChange={handleFavoritesToggle}
-                aria-label="Show favorites only"
-                className="w-5 h-5 rounded border-apple-divider text-apple-accent focus:ring-2 focus:ring-apple-accent cursor-pointer"
-              />
-              <span className="text-sm text-apple-text-primary group-hover:text-apple-accent transition-colors">
-                Show favorites only
-              </span>
-            </label>
-          </div>
+          <FavoritesFilterSection
+            showFavoritesOnly={activeFilters.showFavoritesOnly ?? false}
+            onToggle={handleFavoritesToggle}
+          />
 
           {/* Runtime Filter (optional) */}
           {showRuntimeFilter && (

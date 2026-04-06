@@ -4,6 +4,7 @@
  */
 
 import { UsePaginationResult } from '@/hooks/usePagination';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export interface PaginationProps {
   /** Pagination state and controls from usePagination hook */
@@ -28,6 +29,7 @@ export default function Pagination({
   itemsPerPageOptions = [12, 24, 48, 96],
   className = '',
 }: PaginationProps) {
+  const { t } = useTranslation();
   const {
     currentPage,
     totalPages,
@@ -52,25 +54,32 @@ export default function Pagination({
     <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${className}`}>
       {/* Left: Items info */}
       <div className="text-sm text-apple-text-secondary">
-        Showing <span className="font-medium text-apple-text-primary">{startIndex + 1}</span> to{' '}
-        <span className="font-medium text-apple-text-primary">{endIndex}</span> of{' '}
-        <span className="font-medium text-apple-text-primary">{totalItems}</span> results
+        {t('pagination_summary', {
+          start: startIndex + 1,
+          end: endIndex,
+          total: totalItems,
+        })}
       </div>
 
       {/* Center: Page navigation */}
-      <nav className="flex items-center gap-2" aria-label="Pagination" role="navigation">
+      <nav
+        className="flex items-center gap-2"
+        aria-label={t('pagination_nav_aria')}
+        role="navigation"
+      >
         {/* Previous button */}
         <button
+          type="button"
           onClick={previousPage}
           disabled={isFirstPage}
-          aria-label="Previous page"
+          aria-label={t('pagination_prev_aria')}
           className={`px-3 py-2 rounded-apple-md text-sm font-medium transition-all ${
             isFirstPage
               ? 'text-apple-text-tertiary cursor-not-allowed'
               : 'text-apple-text-primary hover:bg-apple-bg-secondary'
           }`}
         >
-          ← Previous
+          {t('pagination_prev')}
         </button>
 
         {/* Page numbers */}
@@ -79,6 +88,7 @@ export default function Pagination({
           {visiblePages[0] > 1 && (
             <>
               <button
+                type="button"
                 onClick={() => goToPage(1)}
                 className="px-3 py-2 rounded-apple-md text-sm font-medium text-apple-text-primary hover:bg-apple-bg-secondary transition-all"
               >
@@ -91,9 +101,10 @@ export default function Pagination({
           {/* Visible page numbers */}
           {visiblePages.map((page) => (
             <button
+              type="button"
               key={page}
               onClick={() => goToPage(page)}
-              aria-label={`Go to page ${page}`}
+              aria-label={t('pagination_page_aria', { n: page })}
               aria-current={page === currentPage ? 'page' : undefined}
               className={`px-3 py-2 rounded-apple-md text-sm font-medium transition-all ${
                 page === currentPage
@@ -112,6 +123,7 @@ export default function Pagination({
                 <span className="px-2 text-apple-text-tertiary">...</span>
               )}
               <button
+                type="button"
                 onClick={() => goToPage(totalPages)}
                 className="px-3 py-2 rounded-apple-md text-sm font-medium text-apple-text-primary hover:bg-apple-bg-secondary transition-all"
               >
@@ -123,16 +135,17 @@ export default function Pagination({
 
         {/* Next button */}
         <button
+          type="button"
           onClick={nextPage}
           disabled={isLastPage}
-          aria-label="Next page"
+          aria-label={t('pagination_next_aria')}
           className={`px-3 py-2 rounded-apple-md text-sm font-medium transition-all ${
             isLastPage
               ? 'text-apple-text-tertiary cursor-not-allowed'
               : 'text-apple-text-primary hover:bg-apple-bg-secondary'
           }`}
         >
-          Next →
+          {t('pagination_next')}
         </button>
       </nav>
 
@@ -140,7 +153,7 @@ export default function Pagination({
       {showItemsPerPage && (
         <div className="flex items-center gap-2">
           <label htmlFor="items-per-page" className="text-sm text-apple-text-secondary">
-            Per page:
+            {t('pagination_per_page')}
           </label>
           <select
             id="items-per-page"

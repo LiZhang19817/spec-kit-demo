@@ -4,6 +4,8 @@
  */
 
 import { Genre, GENRES } from '@/types/movie';
+import { useTranslation } from '@/i18n/useTranslation';
+import { genreToMessageId } from '@/i18n/labels';
 
 export interface GenreFilterProps {
   /** Selected genres */
@@ -24,6 +26,8 @@ export default function GenreFilter({
   onChange,
   className = '',
 }: GenreFilterProps) {
+  const { t } = useTranslation();
+
   const handleGenreToggle = (genre: Genre) => {
     const isSelected = selectedGenres.includes(genre);
 
@@ -47,10 +51,10 @@ export default function GenreFilter({
     <div className={`space-y-3 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-apple-text-primary">Genre</h3>
+        <h3 className="text-sm font-medium text-apple-text-primary">{t('genre_heading')}</h3>
         {selectedGenres.length > 0 && (
           <span className="text-xs text-apple-text-secondary">
-            {selectedGenres.length} selected
+            {t('genre_selected_badge', { count: selectedGenres.length })}
           </span>
         )}
       </div>
@@ -78,7 +82,7 @@ export default function GenreFilter({
                 focus:outline-none focus:ring-2 focus:ring-apple-accent focus:ring-offset-2
               `}
             >
-              {genre}
+              {t(genreToMessageId(genre))}
             </button>
           );
         })}

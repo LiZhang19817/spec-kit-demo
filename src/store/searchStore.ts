@@ -163,7 +163,7 @@ export const useSearchStore = create<SearchState>()(
 
         // Apply search if term exists
         if (searchTerm.trim().length >= 2 && searchIndex) {
-          result = searchMovies(searchIndex, searchTerm);
+          result = searchMovies(searchIndex, allMovies, searchTerm);
         }
 
         // Apply filters

@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export interface YearFilterProps {
   /** Minimum available year */
@@ -36,6 +37,7 @@ export default function YearFilter({
   onChange,
   className = '',
 }: YearFilterProps) {
+  const { t } = useTranslation();
   const [localMinYear, setLocalMinYear] = useState(selectedMinYear);
   const [localMaxYear, setLocalMaxYear] = useState(selectedMaxYear);
 
@@ -62,19 +64,20 @@ export default function YearFilter({
   };
 
   const isFullRange = localMinYear === minYear && localMaxYear === maxYear;
-  const displayLabel = isFullRange ? 'All Years' : `${localMinYear} - ${localMaxYear}`;
+  const displayLabel = isFullRange ? t('year_all') : `${localMinYear} - ${localMaxYear}`;
 
   return (
     <div className={`space-y-3 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-apple-text-primary">Release Year</h3>
+        <h3 className="text-sm font-medium text-apple-text-primary">{t('year_heading')}</h3>
         {!isFullRange && (
           <button
+            type="button"
             onClick={handleReset}
             className="text-xs text-apple-accent hover:underline focus:outline-none"
           >
-            Reset
+            {t('year_reset')}
           </button>
         )}
       </div>
@@ -87,7 +90,7 @@ export default function YearFilter({
       {/* Min Year Slider */}
       <div className="space-y-2">
         <label htmlFor="min-year-slider" className="block text-xs text-apple-text-secondary">
-          From: {localMinYear}
+          {t('year_from')} {localMinYear}
         </label>
         <input
           id="min-year-slider"
@@ -96,7 +99,7 @@ export default function YearFilter({
           max={maxYear}
           value={localMinYear}
           onChange={(e) => handleMinChange(parseInt(e.target.value))}
-          aria-label="Minimum year"
+          aria-label={t('year_min_aria')}
           className="w-full h-2 bg-apple-bg-tertiary rounded-lg appearance-none cursor-pointer accent-apple-accent"
         />
       </div>
@@ -104,7 +107,7 @@ export default function YearFilter({
       {/* Max Year Slider */}
       <div className="space-y-2">
         <label htmlFor="max-year-slider" className="block text-xs text-apple-text-secondary">
-          To: {localMaxYear}
+          {t('year_to')} {localMaxYear}
         </label>
         <input
           id="max-year-slider"
@@ -113,7 +116,7 @@ export default function YearFilter({
           max={maxYear}
           value={localMaxYear}
           onChange={(e) => handleMaxChange(parseInt(e.target.value))}
-          aria-label="Maximum year"
+          aria-label={t('year_max_aria')}
           className="w-full h-2 bg-apple-bg-tertiary rounded-lg appearance-none cursor-pointer accent-apple-accent"
         />
       </div>

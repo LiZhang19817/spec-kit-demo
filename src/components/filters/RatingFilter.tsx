@@ -3,6 +3,8 @@
  * Star rating filter with clickable star buttons
  */
 
+import { useTranslation } from '@/i18n/useTranslation';
+
 export interface RatingFilterProps {
   /** Selected minimum rating (1-5, or null for none) */
   selectedRating: number | null;
@@ -22,6 +24,7 @@ export default function RatingFilter({
   onChange,
   className = '',
 }: RatingFilterProps) {
+  const { t } = useTranslation();
   const stars = [1, 2, 3, 4, 5];
 
   const handleStarClick = (rating: number) => {
@@ -45,19 +48,22 @@ export default function RatingFilter({
   };
 
   const displayLabel =
-    selectedRating !== null ? `${selectedRating.toFixed(1)}+ rating` : 'Any rating';
+    selectedRating !== null
+      ? `${selectedRating.toFixed(1)}+ ${t('filter_rating_suffix')}`
+      : t('rating_any');
 
   return (
     <div className={`space-y-3 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium text-apple-text-primary">Rating</h3>
+        <h3 className="text-sm font-medium text-apple-text-primary">{t('rating_heading')}</h3>
         {selectedRating !== null && (
           <button
+            type="button"
             onClick={handleClear}
             className="text-xs text-apple-accent hover:underline focus:outline-none"
           >
-            Clear
+            {t('rating_clear')}
           </button>
         )}
       </div>
@@ -78,7 +84,7 @@ export default function RatingFilter({
               key={rating}
               onClick={() => handleStarClick(rating)}
               onKeyDown={(e) => handleKeyDown(e, rating)}
-              aria-label={`${rating} stars and above`}
+              aria-label={t('rating_star_aria', { n: rating })}
               aria-pressed={isPressed}
               className={`
                 text-3xl transition-all duration-200

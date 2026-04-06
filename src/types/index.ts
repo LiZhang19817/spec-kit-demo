@@ -8,7 +8,13 @@ export type { Movie, Genre } from './movie';
 export { isMovie, isGenre } from './movie';
 
 // Filter and search types
-export type { FilterCriteria, SearchQuery, UserPreferences, SortConfig } from './filters';
+export type {
+  AppLocale,
+  FilterCriteria,
+  SearchQuery,
+  UserPreferences,
+  SortConfig,
+} from './filters';
 
 export {
   DEFAULT_FILTERS,

@@ -5,8 +5,9 @@
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { UserPreferences, DEFAULT_PREFERENCES } from '@/types/filters';
+import { AppLocale, UserPreferences, DEFAULT_PREFERENCES } from '@/types/filters';
 import { getItem, setItem, STORAGE_KEYS } from '@/lib/localStorage';
+import { applyDocumentLocale, resolveLocale } from '@/i18n/locale';
 
 /**
  * UI store state
@@ -29,6 +30,7 @@ interface UIState {
 
   /** Actions */
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
+  setLocale: (locale: AppLocale) => void;
   setViewType: (viewType: 'grid' | 'list') => void;
   setPreferences: (preferences: Partial<UserPreferences>) => void;
   loadPreferences: () => void;
@@ -94,6 +96,20 @@ export const useUIStore = create<UIState>()(
         setItem(STORAGE_KEYS.THEME, themePreference);
       },
 
+      setLocale: (locale: AppLocale) => {
+        const resolved = resolveLocale(locale);
+        set((state) => ({
+          preferences: {
+            ...state.preferences,
+            locale: resolved,
+            lastUpdated: Date.now(),
+          },
+        }));
+        applyDocumentLocale(resolved);
+        const { preferences } = get();
+        setItem(STORAGE_KEYS.PREFERENCES, preferences);
+      },
+
       setViewType: (viewType: 'grid' | 'list') => {
         set((state) => ({
           preferences: {
@@ -127,18 +143,25 @@ export const useUIStore = create<UIState>()(
 
         if (stored) {
           const actualTheme = stored.theme === 'system' ? getSystemTheme() : stored.theme;
+          const merged: UserPreferences = {
+            ...DEFAULT_PREFERENCES,
+            ...stored,
+            locale: resolveLocale(stored.locale),
+          };
 
           set({
-            preferences: stored,
+            preferences: merged,
             theme: actualTheme,
           });
 
           applyTheme(actualTheme);
+          applyDocumentLocale(merged.locale);
         } else {
           // Initialize with defaults
           const actualTheme = getSystemTheme();
-          set({ theme: actualTheme });
+          set({ theme: actualTheme, preferences: DEFAULT_PREFERENCES });
           applyTheme(actualTheme);
+          applyDocumentLocale(DEFAULT_PREFERENCES.locale);
           setItem(STORAGE_KEYS.PREFERENCES, DEFAULT_PREFERENCES);
         }
       },

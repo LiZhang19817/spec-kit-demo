@@ -98,8 +98,23 @@ export interface Movie {
   /** Content rating (Singapore film classification) */
   contentRating?: ContentRating;
 
-  /** Netflix URL for this title */
+  /** Primary watch link from catalog (Netflix or Max search URL — field name is legacy) */
   netflixUrl?: string;
+
+  /** When both Netflix and Max apply, optional second link (from fetch script) */
+  maxUrl?: string;
+
+  /** TMDB watch provider slugs, e.g. `netflix`, `max` */
+  watchProviders?: string[];
+
+  /** TMDB media type for API (movie vs TV) */
+  type?: 'movie' | 'series';
+
+  /** TMDB numeric id (preferred for localized fetches) */
+  tmdbId?: number;
+
+  /** Legacy: TMDB id stored as netflixId in older exports */
+  netflixId?: number;
 }
 
 /**

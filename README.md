@@ -109,10 +109,19 @@ Create a `.env` file in the project root:
 VITE_TMDB_API_KEY=your_tmdb_api_key_here
 ```
 
-4. **Fetch Netflix content** (optional - data already included):
+4. **Fetch Netflix content** (optional — data already included):
 ```bash
-node scripts/fetch-netflix-content.js
+npm run fetch:movies
 ```
+(`node scripts/fetch-netflix-content.js` is the same script.)
+
+**Why doesn’t the site “re-download” by itself?** The browser only loads static JSON (`/data/movies.json`). Pulling the full catalog from TMDB is done by a **Node** script (API key, many requests, long runtime). In **production** there is usually no server to run that script from a button.
+
+**Development:** you can turn on a dev-only import before reload. Add to `.env`:
+```env
+VITE_ENABLE_IMPORT_API=true
+```
+Ensure `VITE_TMDB_API_KEY` or `TMDB_API_KEY` is set (same as the fetch script). Then **Update** in the header will POST to `/api/refresh-catalog` (runs the importer), then refresh the list. This can take a long time; keep the tab open until it finishes.
 
 5. **Start development server**:
 ```bash

@@ -27,6 +27,15 @@ export interface SearchBarProps {
   /** Placeholder text */
   placeholder?: string;
 
+  /** Accessible name for the search field */
+  inputAriaLabel?: string;
+
+  /** Accessible name for the clear control */
+  clearAriaLabel?: string;
+
+  /** Pre-formatted result count line (e.g. "5 results") */
+  resultSummary?: string;
+
   /** Additional CSS classes */
   className?: string;
 }
@@ -42,6 +51,9 @@ export default function SearchBar({
   resultCount,
   autoFocus = false,
   placeholder = 'Search movies by title, director, cast...',
+  inputAriaLabel = 'Search movies',
+  clearAriaLabel = 'Clear search',
+  resultSummary,
   className = '',
 }: SearchBarProps) {
   const [localValue, setLocalValue] = useState(value);
@@ -90,7 +102,8 @@ export default function SearchBar({
         onChange={handleChange}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        aria-label="Search movies"
+        aria-label={inputAriaLabel}
+        data-testid="movie-search-input"
         className="w-full pl-12 pr-24 py-3 bg-apple-bg-secondary text-apple-text-primary rounded-apple-lg border border-apple-divider focus:outline-none focus:ring-2 focus:ring-apple-accent focus:border-transparent transition-all"
       />
 
@@ -98,14 +111,15 @@ export default function SearchBar({
       <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
         {resultCount !== undefined && localValue && (
           <span className="text-sm text-apple-text-secondary px-2">
-            {resultCount} {resultCount === 1 ? 'result' : 'results'}
+            {resultSummary ?? `${resultCount} ${resultCount === 1 ? 'result' : 'results'}`}
           </span>
         )}
 
         {showClear && (
           <button
+            type="button"
             onClick={handleClear}
-            aria-label="Clear search"
+            aria-label={clearAriaLabel}
             className="p-2 rounded-full hover:bg-apple-bg-tertiary transition-colors"
           >
             <span className="text-lg">✕</span>

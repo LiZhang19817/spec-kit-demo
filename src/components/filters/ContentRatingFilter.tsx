@@ -4,6 +4,8 @@
  */
 
 import { ContentRating, CONTENT_RATINGS } from '@/types/movie';
+import { useTranslation } from '@/i18n/useTranslation';
+import { contentRatingToDescId, contentRatingToPillId } from '@/i18n/labels';
 
 export interface ContentRatingFilterProps {
   /** Currently selected content ratings */
@@ -17,18 +19,6 @@ export interface ContentRatingFilterProps {
 }
 
 /**
- * Content rating descriptions for Singapore film classification
- */
-const RATING_DESCRIPTIONS: Record<ContentRating, string> = {
-  G: 'General - Suitable for all ages',
-  PG: 'Parental Guidance - Some material may be unsuitable for children',
-  PG13: 'Parental Guidance 13 - Suitable for 13 and above',
-  NC16: 'No Children Under 16 - Suitable for 16 and above',
-  M18: 'Mature 18 - Suitable for 18 and above',
-  R21: 'Restricted 21 - Suitable for adults 21 and above',
-};
-
-/**
  * Content rating filter with pill-style multi-select buttons
  */
 export default function ContentRatingFilter({
@@ -36,6 +26,8 @@ export default function ContentRatingFilter({
   onChange,
   className = '',
 }: ContentRatingFilterProps) {
+  const { t } = useTranslation();
+
   const handleRatingToggle = (rating: ContentRating) => {
     const isSelected = selectedRatings.includes(rating);
 
@@ -48,7 +40,9 @@ export default function ContentRatingFilter({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <label className="block text-sm font-medium text-apple-text-primary">Content Rating</label>
+      <label className="block text-sm font-medium text-apple-text-primary">
+        {t('content_rating_heading')}
+      </label>
 
       <div className="flex flex-wrap gap-2">
         {CONTENT_RATINGS.map((rating) => {
@@ -60,14 +54,14 @@ export default function ContentRatingFilter({
               onClick={() => handleRatingToggle(rating)}
               role="checkbox"
               aria-checked={isSelected}
-              title={RATING_DESCRIPTIONS[rating]}
+              title={t(contentRatingToDescId(rating))}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
                 isSelected
                   ? 'bg-apple-accent text-white shadow-md'
                   : 'bg-apple-bg-secondary text-apple-text-secondary hover:bg-apple-bg-tertiary'
               }`}
             >
-              {rating}
+              {t(contentRatingToPillId(rating))}
             </button>
           );
         })}
@@ -76,12 +70,12 @@ export default function ContentRatingFilter({
       {/* Description of selected rating */}
       {selectedRatings.length === 1 && (
         <p className="text-xs text-apple-text-tertiary">
-          {RATING_DESCRIPTIONS[selectedRatings[0]]}
+          {t(contentRatingToDescId(selectedRatings[0]))}
         </p>
       )}
       {selectedRatings.length > 1 && (
         <p className="text-xs text-apple-text-tertiary">
-          {selectedRatings.length} ratings selected
+          {t('content_rating_multi', { n: selectedRatings.length })}
         </p>
       )}
     </div>

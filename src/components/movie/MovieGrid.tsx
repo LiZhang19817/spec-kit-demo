@@ -7,6 +7,7 @@ import MovieCard from './MovieCard';
 import SkeletonLoader from '../common/SkeletonLoader';
 import EmptyState from '../common/EmptyState';
 import { Movie } from '@/types/movie';
+import { useTranslation } from '@/i18n/useTranslation';
 
 export interface MovieGridProps {
   /** Movies to display */
@@ -40,6 +41,8 @@ export default function MovieGrid({
   isLoading = false,
   className = '',
 }: MovieGridProps) {
+  const { t } = useTranslation();
+
   // Loading state
   if (isLoading) {
     return (
@@ -56,11 +59,7 @@ export default function MovieGrid({
   // Empty state
   if (movies.length === 0) {
     return (
-      <EmptyState
-        icon="🎬"
-        title="No Movies Found"
-        description="Try adjusting your search or filters to find more movies."
-      />
+      <EmptyState icon="🎬" title={t('grid_empty_title')} description={t('grid_empty_desc')} />
     );
   }
 
